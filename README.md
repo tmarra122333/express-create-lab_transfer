@@ -23,17 +23,27 @@ You need to convert this app into one that has views.
 
 #### Leading questions
 
-* Do you need to install `ejs`?
+* Do you need to install `ejs`? 
 
-* Do you need to make a `views` folder?
 
-* Is there a folder you should put inside the views folder?  Is it possible that this question doesn't have only one correct answer?
+
+* Do you need to make a `views` folder? 
+
+
+
+* Is there a folder you should put inside the views folder?  Is it possible that this question doesn't have only one correct answer? 
+
+
 
 * Will you need a route to serve up the form?
+
+
 
 * In what file would you put the form?
 
 * Is there a view that the POST route renders? Or should it just continue to redirect?
+
+
 
 #### When you have the form working and creating data:
 

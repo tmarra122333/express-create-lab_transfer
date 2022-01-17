@@ -1,18 +1,42 @@
 const express = require('express');
+const res = require('express/lib/response');
 const app = express();
 
 const PORT = 3000;
+console.log("this is working!!!!")
+
 
 // middleware
 app.use(express.urlencoded({ extended: false }));
 
 // db
-const products = require('./products');
+const products = require('./models/products');
 
 // product index route
+
+
 app.get('/products', (req, res) => {
   res.send(products);
 });
+
+app.get('/products/new', (req, res) => {
+  res.render("create.ejs");
+});
+
+// const context = {products: allProducts};
+// res.render()
+
+// app.get('/products', (req, res) => {
+//   res.send(products);
+// });
+
+
+// app.get('/products/new/car', (req, res) => {
+//   res.render("create.ejs");
+// });
+
+
+
 
 // product show route
 app.get('/products/:id', (req, res) => {
