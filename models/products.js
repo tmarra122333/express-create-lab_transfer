@@ -1,4 +1,106 @@
-module.exports = [
+class Collection {
+  #Model
+  #currentId
+  #items
+  constructor(model, startingData) {
+      this.#Model = model;
+      this.#currentId = 0;
+      this.#items = this.#populateItems( startingData );
+  }
+
+  /**
+   * @description It will take an array as a argument 
+   * @returns on Object that contains the { id as a key } and { te item as the value } 
+   */
+
+  #populateItems( startingData ) {
+      return startingData.reduce(( acc, item, idx ) => {
+          this.#currentId = idx;
+          acc[this.#currentId] = new this.#Model(item, idx)
+          return acc;
+      }, {});
+  }
+
+  #generateId(){                              
+      return ++this.#currentId
+  }
+
+  /**
+   * @description Will return an array with all items availible in this.items
+   * @returns array
+   */
+
+  find() {
+      return Object.values(this.#items);
+  }
+
+  /**
+   * @description Will return item match with the itemId
+   * @param { string } itemId
+   * @param { function } callBack Will return error or item
+   * @returns function;
+   */
+
+  findById( itemId, callBack ) {
+      if (!itemId) return console.log("missing id in first argument");
+  
+      if (typeof callBack !== "function") {
+          return console.log("missing function in second argument");
+      }
+  
+      let error;
+      const item = this.#items[itemId];
+  
+      if (!item) {
+          error = { message: `item with id "${itemId}" can't be found` };
+      }
+  
+      return callBack(error, item);
+  }
+
+  create( data, callBack ) {
+    if (!data) return console.log("missing data in first argument");
+
+    if (typeof callBack !== "function") {
+      return console.log("missing function in second argument");
+    }
+
+    let error, newItem;
+
+    const isEmpty = Object.keys(data).every(field => data[field] === "");
+
+    if (isEmpty) {
+      error = { message: `you have empty fields` };
+    } else {
+      
+      newItem = new this.#Model( data, this.#generateId());
+
+      this.#items[newItem.id] = newItem;
+    }
+
+    return callBack(error, newItem);
+  }
+};
+
+
+
+
+class Product {
+  constructor( data, id ) {
+      this.id = id;
+      this.name = data.name;
+      this.price = data.price;
+      this.image = data.image;
+  }
+  
+}
+
+
+
+
+
+
+module.exports = new Collection(Product, [
   { 
     name: "Car", 
     price: 20000, 
@@ -59,4 +161,4 @@ module.exports = [
     price: 9, 
     img: "http://scitechdaily.com/images/Detailed-Global-Climate-Change-Projections-150x150.jpg" 
   }
-];
+]);
